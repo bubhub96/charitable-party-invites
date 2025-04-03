@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .primary { fill: #2E7D32; }
+    .accent { fill: #FF8F00; }
+  </style>
+  <!-- Gift box base -->
+  <rect class="primary" x="15" y="35" width="50" height="35" rx="3"/>
+  <!-- Gift box lid -->
+  <rect class="primary" x="10" y="25" width="60" height="12" rx="3"/>
+  <!-- Ribbon -->
+  <rect class="accent" x="35" y="25" width="10" height="45"/>
+  <!-- Heart cutout -->
+  <path class="accent" d="M40 40 C35 35 30 35 27 38 C24 41 24 46 30 52 L40 62 L50 52 C56 46 56 41 53 38 C50 35 45 35 40 40"/>
+</svg>

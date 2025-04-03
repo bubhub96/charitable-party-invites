@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .primary { fill: #2E7D32; }
+    .secondary { fill: #795548; }
+    .accent { fill: #FF8F00; }
+  </style>
+  <!-- Envelope -->
+  <path class="secondary" d="M10 30 L50 55 L90 30 L90 70 L10 70 Z"/>
+  <path class="primary" d="M10 30 L50 55 L90 30 L50 15 Z"/>
+  <!-- Checkmark -->
+  <path class="accent" d="M40 45 L45 55 L65 35" stroke="#FF8F00" stroke-width="4" fill="none"/>
+</svg>

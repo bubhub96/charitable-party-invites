@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1000" height="300" viewBox="0 0 1000 300" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@600&amp;display=swap');
+    .primary { fill: #2E7D32; }
+    .accent { fill: #FF8F00; }
+    .text { fill: #2E7D32; font-family: 'Inter', sans-serif; }
+  </style>
+  <!-- Gift box base -->
+  <rect class="primary" x="75" y="125" width="150" height="100" rx="10"/>
+  <!-- Gift box lid -->
+  <rect class="primary" x="60" y="100" width="180" height="35" rx="10"/>
+  <!-- Ribbon -->
+  <rect class="accent" x="140" y="100" width="20" height="125"/>
+  <!-- Heart cutout -->
+  <path class="accent" d="M150 150 C140 140 130 140 125 145 C120 150 120 160 130 170 L150 190 L170 170 C180 160 180 150 175 145 C170 140 160 140 150 150"/>
+  <!-- Text -->
+  <text x="300" y="175" class="text" style="font-size: 80px; font-weight: 600;">Ethical Children's</text>
+  <text x="300" y="250" class="text" style="font-size: 70px; letter-spacing: 5px;">P A R T I E S</text>
+</svg>

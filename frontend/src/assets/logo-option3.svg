@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="60" viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .primary { fill: #2E7D32; }
+    .accent { fill: #FF8F00; }
+    .text { fill: #2E7D32; font-family: 'Inter', sans-serif; }
+  </style>
+  <!-- Tree trunk -->
+  <rect class="primary" x="28" y="35" width="4" height="10"/>
+  <!-- Tree leaves as hearts -->
+  <path class="primary" d="M30 15 C25 15 22 18 22 21 C22 24 25 27 30 32 C35 27 38 24 38 21 C38 18 35 15 30 15"/>
+  <path class="primary" d="M30 20 C26 20 24 22 24 24 C24 26 26 28 30 32 C34 28 36 26 36 24 C36 22 34 20 30 20"/>
+  <path class="primary" d="M30 25 C27 25 25 26 25 28 C25 30 27 32 30 35 C33 32 35 30 35 28 C35 26 33 25 30 25"/>
+  <!-- Star -->
+  <path class="accent" d="M30 10 L32 14 L36 15 L33 18 L34 22 L30 20 L26 22 L27 18 L24 15 L28 14 Z"/>
+  <!-- Text -->
+  <text x="60" y="35" class="text" style="font-size: 16px; font-weight: 600;">Ethical Children's</text>
+  <text x="60" y="50" class="text" style="font-size: 14px;">P A R T I E S</text>
+</svg>
