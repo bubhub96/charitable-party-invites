@@ -20,7 +20,7 @@ const ViewInvitation = () => {
 
   const fetchInvitation = useCallback(async () => {
     try {
-      const response = await fetch(`http://localhost:5002/api/invitations/${id}`);
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/invitations/${id}`);
       const data = await response.json();
       setInvitation(data);
     } catch (error) {
@@ -36,7 +36,7 @@ const ViewInvitation = () => {
   const handleRsvpSubmit = async (e) => {
     e.preventDefault();
     try {
-      await fetch(`http://localhost:5002/api/invitations/${id}/rsvp`, {
+      await fetch(`${process.env.REACT_APP_API_URL}/api/invitations/${id}/rsvp`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

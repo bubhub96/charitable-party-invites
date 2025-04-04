@@ -104,7 +104,7 @@ const CreateInvitation = () => {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch('http://localhost:5002/api/invitations', {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/invitations`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
