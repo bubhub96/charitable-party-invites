@@ -62,17 +62,22 @@ export const RegisterForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log('Form submitted');
     setError('');
 
     if (formData.password !== formData.confirmPassword) {
       setError('Passwords do not match');
+      console.log('Password mismatch');
       return;
     }
 
     try {
+      console.log('Attempting registration...');
       await register(formData.name, formData.email, formData.password);
+      console.log('Registration successful');
       navigate('/');
     } catch (err) {
+      console.error('Registration error:', err);
       setError('Registration failed. Please try again.');
     }
   };
