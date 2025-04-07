@@ -34,6 +34,7 @@ const CreateInvitation = React.lazy(() => import('./pages/CreateInvitation'));
 const ViewInvitation = React.lazy(() => import('./pages/ViewInvitation'));
 
 function App() {
+  console.log('API URL:', process.env.REACT_APP_API_URL); // Verify environment variable
   return (
     <Router>
       <ErrorBoundary>
