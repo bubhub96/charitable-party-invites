@@ -10,8 +10,15 @@ app.use(cors());
 app.use(express.json());
 
 // Database connection
-console.log('Attempting to connect to MongoDB with URI:', process.env.MONGODB_URI || 'mongodb://localhost/charitable-invites');
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/charitable-invites', {
+const dbUri = process.env.MONGODB_URI || 'mongodb://localhost/charitable-invites';
+console.log('MongoDB URI present:', !!process.env.MONGODB_URI);
+console.log('Attempting to connect to MongoDB...');
+
+// Add global error handler for unhandled promise rejections
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+});
+mongoose.connect(dbUri, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 })

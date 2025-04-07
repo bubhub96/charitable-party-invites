@@ -16,6 +16,7 @@ const validateRegistration = [
 
 // Register a new user
 router.post('/register', validateRegistration, async (req, res) => {
+  console.log('Starting registration process...');
   console.log('Registration attempt:', { ...req.body, password: '[REDACTED]' });
   try {
     // Check for validation errors
@@ -27,7 +28,16 @@ router.post('/register', validateRegistration, async (req, res) => {
     const { name, email, password } = req.body;
 
     // Check if user already exists
-    let user = await User.findOne({ email });
+    console.log('Checking if user exists...');
+    let user;
+    try {
+      user = await User.findOne({ email });
+      console.log('User search completed:', user ? 'User found' : 'User not found');
+    } catch (findError) {
+      console.error('Error searching for user:', findError);
+      console.error('MongoDB connection string:', process.env.MONGODB_URI ? 'Set' : 'Not set');
+      return res.status(500).json({ message: 'Database error', error: findError.message });
+    }
     if (user) {
       console.log('Registration failed: User already exists');
     return res.status(400).json({ message: 'User already exists' });
