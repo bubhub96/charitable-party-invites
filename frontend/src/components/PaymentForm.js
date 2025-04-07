@@ -17,7 +17,7 @@ const PaymentForm = ({ amount, onSuccess, onError }) => {
       const stripe = await stripePromise;
       
       // Create payment intent on your server
-      const response = await fetch('http://localhost:5002/api/create-payment-intent', {
+      const response = await fetch('https://ethical-partys-api.onrender.com/api/create-payment-intent', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
