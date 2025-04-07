@@ -66,6 +66,8 @@ export const AuthProvider = ({ children }) => {
   };
 
   const register = async (name, email, password) => {
+    console.log('Attempting registration with:', { name, email });
+    console.log('API URL:', process.env.REACT_APP_API_URL);
     const response = await fetch(`${process.env.REACT_APP_API_URL}/api/users/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -73,8 +75,16 @@ export const AuthProvider = ({ children }) => {
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.message || 'Registration failed');
+      console.error('Registration failed with status:', response.status);
+      let errorMessage = 'Registration failed';
+      try {
+        const errorData = await response.json();
+        console.error('Error details:', errorData);
+        errorMessage = errorData.message || errorMessage;
+      } catch (e) {
+        console.error('Could not parse error response:', e);
+      }
+      throw new Error(errorMessage);
     }
 
     const { token, user: userData } = await response.json();

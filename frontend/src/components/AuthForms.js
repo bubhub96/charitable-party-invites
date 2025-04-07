@@ -78,7 +78,7 @@ export const RegisterForm = () => {
       navigate('/');
     } catch (err) {
       console.error('Registration error:', err);
-      setError('Registration failed. Please try again.');
+      setError(err.message || 'Registration failed. Please try again.');
     }
   };
 
