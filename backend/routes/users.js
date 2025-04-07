@@ -16,6 +16,7 @@ const validateRegistration = [
 
 // Register a new user
 router.post('/register', validateRegistration, async (req, res) => {
+  console.log('Registration attempt:', { ...req.body, password: '[REDACTED]' });
   try {
     // Check for validation errors
     const errors = validationResult(req);
@@ -28,7 +29,8 @@ router.post('/register', validateRegistration, async (req, res) => {
     // Check if user already exists
     let user = await User.findOne({ email });
     if (user) {
-      return res.status(400).json({ message: 'User already exists' });
+      console.log('Registration failed: User already exists');
+    return res.status(400).json({ message: 'User already exists' });
     }
 
     // Create new user
@@ -43,7 +45,14 @@ router.post('/register', validateRegistration, async (req, res) => {
     user.password = await bcrypt.hash(password, salt);
 
     // Save user to database
-    await user.save();
+    try {
+      await user.save();
+      console.log('User saved successfully:', user._id);
+    } catch (saveError) {
+      console.error('Error saving user:', saveError);
+      console.error('Save error details:', saveError.message);
+      return res.status(500).json({ message: 'Error creating user', error: saveError.message });
+    }
 
     // Create JWT token
     const payload = {
