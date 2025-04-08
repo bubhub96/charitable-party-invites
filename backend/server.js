@@ -7,21 +7,14 @@ const app = express();
 
 // Middleware
 // CORS configuration
-const corsOptions = {
-  origin: [
-    'https://www.ethicalpartys.com',
-    'https://ethicalpartys.com',
-    'http://localhost:3000'
-  ],
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
-  credentials: true
-};
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  next();
+});
 
-app.use(cors(corsOptions));
-
-// Pre-flight requests
-app.options('*', cors(corsOptions));
+app.use(cors());
 app.use(express.json());
 
 // Database connection

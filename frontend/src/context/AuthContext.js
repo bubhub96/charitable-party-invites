@@ -79,12 +79,9 @@ export const AuthProvider = ({ children }) => {
       const response = await fetch(`${apiUrl}/api/users/register`, {
         method: 'POST',
         headers: { 
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
+          'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ name, email, password }),
-        mode: 'cors',
-        credentials: 'same-origin'
+        body: JSON.stringify({ name, email, password })
       });
       
       console.log('Response status:', response.status);
