@@ -1,6 +1,7 @@
 import React from 'react';
 
 const TestEnv = () => {
+  console.log('TestEnv component rendered');
   const [testResult, setTestResult] = React.useState(null);
   const [error, setError] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
@@ -53,6 +54,7 @@ const TestEnv = () => {
   };
 
   const testConnection = async () => {
+    console.log('testConnection function called');
     try {
       setError(null);
       setTestResult(null);
@@ -109,7 +111,10 @@ const TestEnv = () => {
       <div style={{ marginBottom: '20px' }}>
         <h2>API Connection Test:</h2>
         <button 
-          onClick={testConnection}
+          onClick={() => {
+            console.log('Test button clicked');
+            testConnection();
+          }}
           disabled={loading}
           style={{
             padding: '10px 20px',
@@ -151,4 +156,40 @@ const TestEnv = () => {
   );
 };
 
-export default TestEnv;
+// Wrap the component in an error boundary
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error('TestEnv error:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div style={{ padding: '20px', color: 'red' }}>
+          <h1>Something went wrong.</h1>
+          <pre>{this.state.error?.toString()}</pre>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
+}
+
+// Export the wrapped component
+export default function WrappedTestEnv() {
+  return (
+    <ErrorBoundary>
+      <TestEnv />
+    </ErrorBoundary>
+  );
+}
