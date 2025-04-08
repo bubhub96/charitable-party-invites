@@ -1,3 +1,14 @@
+// Helper to safely parse JSON
+const safeJsonParse = async (response) => {
+  const text = await response.text();
+  try {
+    return JSON.parse(text);
+  } catch (error) {
+    console.error('Failed to parse JSON:', { text, error });
+    throw new Error(`Invalid JSON response: ${text.substring(0, 100)}...`);
+  }
+};
+
 export default async function handler(req, res) {
   const { method, body, query } = req;
   const { path } = query;
@@ -25,7 +36,14 @@ export default async function handler(req, res) {
       body: method !== 'GET' ? JSON.stringify(body) : undefined
     });
 
-    const data = await response.json();
+    // Log the raw response
+    console.log('Proxy received response:', {
+      status: response.status,
+      headers: Object.fromEntries(response.headers.entries())
+    });
+
+    // Try to parse the response as JSON
+    const data = await safeJsonParse(response);
     res.status(response.status).json(data);
   } catch (error) {
     console.error('Proxy error:', error);
