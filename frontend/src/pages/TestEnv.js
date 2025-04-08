@@ -6,59 +6,31 @@ const TestEnv = () => {
   const [error, setError] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
 
-  const testFetch = async () => {
+  // Direct API call without using Next.js API routes
+  const testDirectApi = async () => {
     try {
-      // Use absolute URL to avoid path issues
-      const url = window.location.origin + '/api/health';
-      console.log('Testing with fetch:', url);
+      const apiUrl = 'https://ethical-partys-api.onrender.com/api/health';
+      console.log('Testing direct API call to:', apiUrl);
       
-      console.log('Making fetch request to:', url);
-      const response = await fetch(url);
-      const text = await response.text();
-      console.log('Raw response text:', text);
+      const response = await fetch(apiUrl, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      });
       
-      try {
-        const data = JSON.parse(text);
-        console.log('Parsed JSON:', data);
-        return { success: true, data };
-      } catch (parseError) {
-        console.error('JSON parse error:', parseError);
-        throw new Error(`Invalid JSON response: ${text.substring(0, 100)}...`);
+      if (!response.ok) {
+        throw new Error(`API returned status ${response.status}`);
       }
+      
+      const data = await response.json();
+      console.log('Direct API response:', data);
+      return { success: true, data };
     } catch (error) {
-      console.error('Fetch error:', error);
+      console.error('Direct API call failed:', error);
       return { success: false, error };
     }
-  };
-
-  const testXHR = async () => {
-    return new Promise((resolve) => {
-      // Use absolute URL to avoid path issues
-      const url = window.location.origin + '/api/health';
-      console.log('Testing with XHR:', url);
-      
-      const xhr = new XMLHttpRequest();
-      xhr.open('GET', url);
-      xhr.setRequestHeader('Accept', 'application/json');
-      
-      xhr.onload = () => {
-        if (xhr.status === 200) {
-          const data = JSON.parse(xhr.responseText);
-          console.log('XHR response:', data);
-          resolve({ success: true, data });
-        } else {
-          console.error('XHR error:', xhr.statusText);
-          resolve({ success: false, error: new Error(xhr.statusText) });
-        }
-      };
-      
-      xhr.onerror = (error) => {
-        console.error('XHR error:', error);
-        resolve({ success: false, error });
-      };
-      
-      xhr.send();
-    });
   };
 
   const testConnection = async () => {
@@ -71,31 +43,21 @@ const TestEnv = () => {
       console.log('Starting connection tests...');
       console.log('Current environment:', {
         NODE_ENV: process.env.NODE_ENV,
-        API_URL: process.env.REACT_APP_API_URL,
+        API_URL: 'https://ethical-partys-api.onrender.com',
         location: window.location.href
       });
       
-      // Try fetch
-      console.log('Trying fetch...');
-      const fetchResult = await testFetch();
-      if (fetchResult.success) {
-        setTestResult(fetchResult.data);
-        setLoading(false);
-        return;
-      }
-
-      console.log('Fetch failed, trying XHR...');
-      const xhrResult = await testXHR();
-      if (xhrResult.success) {
-        setTestResult(xhrResult.data);
-        setLoading(false);
+      // Try direct API call
+      console.log('Trying direct API call...');
+      const apiResult = await testDirectApi();
+      
+      if (apiResult.success) {
+        setTestResult(apiResult.data);
         return;
       }
       
-      // If both fail, show error
-      const error = fetchResult.error || xhrResult.error;
-      console.error('All connection attempts failed:', error);
-      setError(error.message || 'Failed to connect to the server');
+      // If direct API call fails, show error
+      setError(apiResult.error?.message || 'Failed to connect to the API server');
     } catch (error) {
       console.error('Test runner error:', error);
       setError(error.message || 'Unknown error occurred');
