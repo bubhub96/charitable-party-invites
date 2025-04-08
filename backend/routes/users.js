@@ -16,6 +16,7 @@ const validateRegistration = [
 
 // Register a new user
 router.post('/register', validateRegistration, async (req, res) => {
+  console.log('Received registration request:', { ...req.body, password: '[REDACTED]' });
   console.log('Starting registration process...');
   console.log('Registration attempt:', { ...req.body, password: '[REDACTED]' });
   try {
@@ -44,23 +45,32 @@ router.post('/register', validateRegistration, async (req, res) => {
     }
 
     // Create new user
-    user = new User({
-      name,
-      email,
-      password
-    });
+    try {
+      user = new User({
+        name,
+        email,
+        password
+      });
+      console.log('Created new user object:', { id: user._id, name: user.name, email: user.email });
 
-    // Hash password
-    const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(password, salt);
+      // Hash password
+      const salt = await bcrypt.genSalt(10);
+      user.password = await bcrypt.hash(password, salt);
+    } catch (createError) {
+      console.error('Error creating user:', createError);
+      return res.status(500).json({ message: 'Error creating user', error: createError.message });
+    }
 
     // Save user to database
     try {
       await user.save();
-      console.log('User saved successfully:', user._id);
+      console.log('User saved successfully:', { id: user._id, name: user.name });
     } catch (saveError) {
       console.error('Error saving user:', saveError);
       console.error('Save error details:', saveError.message);
+      if (saveError.code === 11000) {
+        return res.status(400).json({ message: 'Email already exists' });
+      }
       return res.status(500).json({ message: 'Error creating user', error: saveError.message });
     }
 

@@ -7,17 +7,15 @@ const app = express();
 
 // Middleware
 // CORS configuration
-const corsOptions = {
-  origin: [
-    'https://charitable-party-invites-1atmps48d-chris-projects-5bcbafab.vercel.app',
-    'http://localhost:3000'
-  ],
+app.use(cors({
+  origin: true, // Allow all origins
+  credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true
-};
+  allowedHeaders: ['Content-Type', 'Authorization', 'Accept']
+}));
 
-app.use(cors(corsOptions));
+// Pre-flight requests
+app.options('*', cors());
 app.use(express.json());
 
 // Database connection
