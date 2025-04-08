@@ -75,8 +75,11 @@ export const AuthProvider = ({ children }) => {
     console.log('API URL:', process.env.REACT_APP_API_URL);
     
     try {
-      console.log(`Making request to ${apiUrl}/api/users/register`);
-      const response = await fetch(`${apiUrl}/api/users/register`, {
+      console.log('Registration details:', { name, email, apiUrl });
+      const url = `${apiUrl}/api/users/register`;
+      console.log('Making request to:', url);
+      
+      const response = await fetch(url, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json'
@@ -116,8 +119,12 @@ export const AuthProvider = ({ children }) => {
       setUser(userData);
       return userData;
     } catch (error) {
-      console.error('Registration error:', error);
-      throw error;
+      console.error('Registration error:', {
+        message: error.message,
+        stack: error.stack,
+        type: error.constructor.name
+      });
+      throw new Error(error.message || 'Network error occurred');
     }
   };
 

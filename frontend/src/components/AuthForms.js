@@ -72,14 +72,25 @@ export const RegisterForm = () => {
     }
 
     try {
-      console.log('Attempting registration...');
+      console.log('Starting registration process with:', { 
+        name: formData.name, 
+        email: formData.email 
+      });
+      
       await register(formData.name, formData.email, formData.password);
       console.log('Registration successful');
       navigate('/');
     } catch (err) {
-      console.error('Registration error:', err);
-      if (err.message === 'Failed to fetch') {
-        setError('Unable to connect to the server. Please try again later.');
+      console.error('Form registration error:', {
+        message: err.message,
+        type: err.constructor.name,
+        stack: err.stack
+      });
+      
+      if (err.message === 'Failed to fetch' || err.message.includes('NetworkError')) {
+        setError('Unable to connect to the server. Please check your internet connection and try again.');
+      } else if (err.message.includes('Network error')) {
+        setError('Network error occurred. Please try again in a few moments.');
       } else {
         setError(err.message || 'Registration failed. Please try again.');
       }
