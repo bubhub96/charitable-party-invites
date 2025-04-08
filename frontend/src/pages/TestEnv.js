@@ -8,7 +8,7 @@ const TestEnv = () => {
 
   const testFetch = async () => {
     try {
-      const url = '/api/proxy?path=/api/health';
+      const url = '/api/health';
       console.log('Testing with fetch:', url);
       
       console.log('Making fetch request to:', url);
@@ -26,7 +26,7 @@ const TestEnv = () => {
 
   const testXHR = async () => {
     return new Promise((resolve) => {
-      const url = '/api/proxy?path=/api/health';
+      const url = '/api/health';
       console.log('Testing with XHR:', url);
       
       const xhr = new XMLHttpRequest();
