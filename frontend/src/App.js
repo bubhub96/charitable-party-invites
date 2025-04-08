@@ -29,6 +29,7 @@ const GlobalStyle = createGlobalStyle`
 
 // Lazy load pages for better performance
 const Home = React.lazy(() => import('./pages/Home'));
+const TestEnv = React.lazy(() => import('./pages/TestEnv'));
 const Auth = React.lazy(() => import('./pages/Auth'));
 const CreateInvitation = React.lazy(() => import('./pages/CreateInvitation'));
 const ViewInvitation = React.lazy(() => import('./pages/ViewInvitation'));
@@ -46,6 +47,7 @@ function App() {
               <Suspense fallback={<LoadingSpinner size="large" />}>
                 <Routes>
                   <Route path="/" element={<Home />} />
+                  <Route path="/test-env" element={<TestEnv />} />
                   <Route path="/login" element={<Auth />} />
                   <Route path="/register" element={<Auth />} />
                   <Route
