@@ -5,20 +5,14 @@ const TestEnv = () => {
   const [error, setError] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
 
-  const testFetch = async (mode = 'cors') => {
+  const testFetch = async () => {
     try {
       const url = '/api/proxy?path=/api/health';
       console.log('Testing with fetch:', url);
       
-      console.log('Making fetch request with mode:', mode);
-      const response = await fetch(url, {
-        method: 'GET',
-        mode: mode,
-        headers: {
-          'Accept': 'application/json',
-        },
-        credentials: mode === 'cors' ? 'include' : 'omit'
-      });
+      console.log('Making fetch request to:', url);
+      const response = await fetch(url);
+      console.log('Response:', response);
       
       const data = await response.json();
       console.log('Fetch response:', data);
@@ -71,24 +65,16 @@ const TestEnv = () => {
         location: window.location.href
       });
       
-      // Try fetch with different modes
-      console.log('Trying fetch with CORS mode...');
-      const corsResult = await testFetch('cors');
-      if (corsResult.success) {
-        setTestResult(corsResult.data);
+      // Try fetch
+      console.log('Trying fetch...');
+      const fetchResult = await testFetch();
+      if (fetchResult.success) {
+        setTestResult(fetchResult.data);
         setLoading(false);
         return;
       }
 
-      console.log('CORS mode failed, trying no-cors mode...');
-      const noCorsResult = await testFetch('no-cors');
-      if (noCorsResult.success) {
-        setTestResult(noCorsResult.data);
-        setLoading(false);
-        return;
-      }
-
-      console.log('Both fetch modes failed, trying XHR...');
+      console.log('Fetch failed, trying XHR...');
       const xhrResult = await testXHR();
       if (xhrResult.success) {
         setTestResult(xhrResult.data);
