@@ -3,38 +3,98 @@ import React from 'react';
 const TestEnv = () => {
   const [testResult, setTestResult] = React.useState(null);
   const [error, setError] = React.useState(null);
+  const [loading, setLoading] = React.useState(false);
+
+  const testFetch = async () => {
+    try {
+      const url = `${process.env.REACT_APP_API_URL}/api/health`;
+      console.log('Testing with fetch:', url);
+      
+      const response = await fetch(url, {
+        method: 'GET',
+        mode: 'cors',
+        headers: {
+          'Accept': 'application/json',
+        }
+      });
+      
+      const data = await response.json();
+      console.log('Fetch response:', data);
+      return { success: true, data };
+    } catch (error) {
+      console.error('Fetch error:', error);
+      return { success: false, error };
+    }
+  };
+
+  const testXHR = async () => {
+    return new Promise((resolve) => {
+      const url = `${process.env.REACT_APP_API_URL}/api/health`;
+      console.log('Testing with XHR:', url);
+      
+      const xhr = new XMLHttpRequest();
+      xhr.open('GET', url);
+      xhr.setRequestHeader('Accept', 'application/json');
+      
+      xhr.onload = () => {
+        if (xhr.status === 200) {
+          const data = JSON.parse(xhr.responseText);
+          console.log('XHR response:', data);
+          resolve({ success: true, data });
+        } else {
+          console.error('XHR error:', xhr.statusText);
+          resolve({ success: false, error: new Error(xhr.statusText) });
+        }
+      };
+      
+      xhr.onerror = (error) => {
+        console.error('XHR error:', error);
+        resolve({ success: false, error });
+      };
+      
+      xhr.send();
+    });
+  };
 
   const testConnection = async () => {
     try {
       setError(null);
       setTestResult(null);
+      setLoading(true);
       
-      const url = `${process.env.REACT_APP_API_URL}/api/health`;
-      console.log('Testing connection to:', url);
-      
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
-      
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-        },
-        signal: controller.signal
+      console.log('Starting connection tests...');
+      console.log('Current environment:', {
+        NODE_ENV: process.env.NODE_ENV,
+        API_URL: process.env.REACT_APP_API_URL,
+        location: window.location.href
       });
       
-      clearTimeout(timeoutId);
+      // Try fetch first
+      const fetchResult = await testFetch();
+      if (fetchResult.success) {
+        setTestResult(fetchResult.data);
+        setLoading(false);
+        return;
+      }
       
-      const data = await response.json();
-      console.log('Health check response:', data);
-      setTestResult(data);
+      // If fetch fails, try XHR
+      console.log('Fetch failed, trying XHR...');
+      const xhrResult = await testXHR();
+      if (xhrResult.success) {
+        setTestResult(xhrResult.data);
+        setLoading(false);
+        return;
+      }
+      
+      // If both fail, show error
+      const error = fetchResult.error || xhrResult.error;
+      console.error('All connection attempts failed:', error);
+      setError(error.message || 'Failed to connect to the server');
     } catch (error) {
-      console.error('Connection test failed:', {
-        message: error.message,
-        name: error.name,
-        stack: error.stack
-      });
+      console.error('Test runner error:', error);
       setError(error.message || 'Unknown error occurred');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -54,13 +114,14 @@ const TestEnv = () => {
         <h2>API Connection Test:</h2>
         <button 
           onClick={testConnection}
+          disabled={loading}
           style={{
             padding: '10px 20px',
-            backgroundColor: '#4CAF50',
+            backgroundColor: loading ? '#cccccc' : '#4CAF50',
             color: 'white',
             border: 'none',
             borderRadius: '4px',
-            cursor: 'pointer',
+            cursor: loading ? 'not-allowed' : 'pointer',
             marginBottom: '10px'
           }}
         >
