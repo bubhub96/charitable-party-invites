@@ -68,29 +68,54 @@ export const AuthProvider = ({ children }) => {
   const register = async (name, email, password) => {
     console.log('Attempting registration with:', { name, email });
     console.log('API URL:', process.env.REACT_APP_API_URL);
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/users/register`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, email, password })
-    });
+    
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/users/register`, {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({ name, email, password }),
+        mode: 'cors',
+        credentials: 'include'
+      });
+      
+      console.log('Response status:', response.status);
+      const contentType = response.headers.get('content-type');
+      console.log('Content-Type:', contentType);
 
-    if (!response.ok) {
-      console.error('Registration failed with status:', response.status);
-      let errorMessage = 'Registration failed';
-      try {
-        const errorData = await response.json();
-        console.error('Error details:', errorData);
-        errorMessage = errorData.message || errorMessage;
-      } catch (e) {
-        console.error('Could not parse error response:', e);
+      if (!response.ok) {
+        console.error('Registration failed with status:', response.status);
+        let errorMessage = 'Registration failed';
+        
+        if (contentType && contentType.includes('application/json')) {
+          try {
+            const errorData = await response.json();
+            console.error('Error details:', errorData);
+            errorMessage = errorData.message || errorMessage;
+          } catch (e) {
+            console.error('Could not parse error response:', e);
+          }
+        } else {
+          const textError = await response.text();
+          console.error('Raw error response:', textError);
+        }
+        
+        throw new Error(errorMessage);
       }
-      throw new Error(errorMessage);
-    }
 
-    const { token, user: userData } = await response.json();
-    localStorage.setItem('token', token);
-    setUser(userData);
-    return userData;
+      const data = await response.json();
+      console.log('Registration successful:', data);
+      
+      const { token, user: userData } = data;
+      localStorage.setItem('token', token);
+      setUser(userData);
+      return userData;
+    } catch (error) {
+      console.error('Registration error:', error);
+      throw error;
+    }
   };
 
   const logout = () => {
