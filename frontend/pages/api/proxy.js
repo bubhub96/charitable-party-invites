@@ -9,7 +9,22 @@ const safeJsonParse = async (response) => {
   }
 };
 
-export default async function handler(req, res) {
+// Handle CORS preflight requests
+const allowCors = fn => async (req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, Accept');
+
+  if (req.method === 'OPTIONS') {
+    res.status(200).end();
+    return;
+  }
+
+  return await fn(req, res);
+};
+
+// Main handler function
+async function handler(req, res) {
   const { method, body, query } = req;
   const { path } = query;
 
@@ -51,3 +66,6 @@ export default async function handler(req, res) {
     res.status(500).json({ error: error.message });
   }
 }
+
+// Export the wrapped handler
+export default allowCors(handler);
