@@ -26,16 +26,36 @@ export const AuthProvider = ({ children }) => {
         return;
       }
 
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/users/me`, {
+      // Use direct API call to the backend
+      const apiUrl = 'https://ethical-partys-api.onrender.com/api/users/me';
+      console.log('Checking auth with direct API call to:', apiUrl);
+      
+      const response = await fetch(apiUrl, {
+        method: 'GET',
         headers: {
-          'Authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/json'
         }
       });
 
+      console.log('Auth check response status:', response.status);
+      
       if (response.ok) {
-        const userData = await response.json();
-        setUser(userData);
+        // Get the response text first for debugging
+        const responseText = await response.text();
+        console.log('Auth check raw response:', responseText);
+        
+        try {
+          const userData = JSON.parse(responseText);
+          console.log('Auth check user data:', userData);
+          setUser(userData);
+        } catch (parseError) {
+          console.error('Failed to parse auth check response:', parseError);
+          localStorage.removeItem('token');
+          setUser(null);
+        }
       } else {
+        console.log('Auth check failed with status:', response.status);
         localStorage.removeItem('token');
         setUser(null);
       }
@@ -49,30 +69,69 @@ export const AuthProvider = ({ children }) => {
   };
 
   const login = async (email, password) => {
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/api/users/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password })
-    });
+    console.log('Attempting login with:', { email });
+    
+    try {
+      // Use direct API call to the backend
+      const apiUrl = 'https://ethical-partys-api.onrender.com/api/users/login';
+      console.log('Making direct API call to:', apiUrl);
+      
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({ email, password })
+      });
+      
+      console.log('Response status:', response.status);
+      
+      // Get the response text first for debugging
+      const responseText = await response.text();
+      console.log('Raw response:', responseText);
+      
+      // Try to parse as JSON
+      let data;
+      try {
+        data = JSON.parse(responseText);
+        console.log('Parsed response data:', data);
+      } catch (parseError) {
+        console.error('Failed to parse response as JSON:', parseError);
+        throw new Error(`Invalid response format: ${responseText.substring(0, 100)}...`);
+      }
 
-    if (!response.ok) {
-      throw new Error('Login failed');
+      if (!response.ok) {
+        console.error('Login failed with status:', response.status);
+        const errorMessage = data.message || 'Login failed';
+        throw new Error(errorMessage);
+      }
+
+      console.log('Login successful:', data);
+      
+      const { token, user: userData } = data;
+      localStorage.setItem('token', token);
+      setUser(userData);
+      return userData;
+    } catch (error) {
+      console.error('Login error:', error);
+      throw new Error(error.message || 'Network error occurred');
     }
-
-    const { token, user: userData } = await response.json();
-    localStorage.setItem('token', token);
-    setUser(userData);
-    return userData;
   };
 
   const register = async (name, email, password) => {
     console.log('Attempting registration with:', { name, email });
     
     try {
-      const response = await fetch('/api/proxy?path=/api/users/register', {
+      // Use direct API call to the backend
+      const apiUrl = 'https://ethical-partys-api.onrender.com/api/users/register';
+      console.log('Making direct API call to:', apiUrl);
+      
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: { 
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
         },
         body: JSON.stringify({ name, email, password })
       });
@@ -81,27 +140,26 @@ export const AuthProvider = ({ children }) => {
       const contentType = response.headers.get('content-type');
       console.log('Content-Type:', contentType);
 
+      // Get the response text first for debugging
+      const responseText = await response.text();
+      console.log('Raw response:', responseText);
+      
+      // Try to parse as JSON
+      let data;
+      try {
+        data = JSON.parse(responseText);
+        console.log('Parsed response data:', data);
+      } catch (parseError) {
+        console.error('Failed to parse response as JSON:', parseError);
+        throw new Error(`Invalid response format: ${responseText.substring(0, 100)}...`);
+      }
+
       if (!response.ok) {
         console.error('Registration failed with status:', response.status);
-        let errorMessage = 'Registration failed';
-        
-        if (contentType && contentType.includes('application/json')) {
-          try {
-            const errorData = await response.json();
-            console.error('Error details:', errorData);
-            errorMessage = errorData.message || errorMessage;
-          } catch (e) {
-            console.error('Could not parse error response:', e);
-          }
-        } else {
-          const textError = await response.text();
-          console.error('Raw error response:', textError);
-        }
-        
+        const errorMessage = data.message || 'Registration failed';
         throw new Error(errorMessage);
       }
 
-      const data = await response.json();
       console.log('Registration successful:', data);
       
       const { token, user: userData } = data;
