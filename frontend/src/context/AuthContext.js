@@ -66,21 +66,10 @@ export const AuthProvider = ({ children }) => {
   };
 
   const register = async (name, email, password) => {
-    // Temporarily hardcode API URL for testing
-    const apiUrl = 'https://ethical-partys-api.onrender.com';
-    if (!apiUrl) {
-      console.error('API URL is not configured');
-      throw new Error('API configuration error');
-    }
     console.log('Attempting registration with:', { name, email });
-    console.log('API URL:', process.env.REACT_APP_API_URL);
     
     try {
-      console.log('Registration details:', { name, email, apiUrl });
-      const url = `${apiUrl}/api/users/register`;
-      console.log('Making request to:', url);
-      
-      const response = await fetch(url, {
+      const response = await fetch('/api/proxy?path=/api/users/register', {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json'

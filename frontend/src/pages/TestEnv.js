@@ -7,7 +7,7 @@ const TestEnv = () => {
 
   const testFetch = async (mode = 'cors') => {
     try {
-      const url = 'https://ethical-partys-api.onrender.com/api/health';
+      const url = '/api/proxy?path=/api/health';
       console.log('Testing with fetch:', url);
       
       console.log('Making fetch request with mode:', mode);
@@ -31,7 +31,7 @@ const TestEnv = () => {
 
   const testXHR = async () => {
     return new Promise((resolve) => {
-      const url = 'https://ethical-partys-api.onrender.com/api/health';
+      const url = '/api/proxy?path=/api/health';
       console.log('Testing with XHR:', url);
       
       const xhr = new XMLHttpRequest();
