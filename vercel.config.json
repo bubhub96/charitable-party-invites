@@ -2,17 +2,21 @@
   "version": 2,
   "builds": [
     {
-      "src": "frontend/package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "build"
-      }
+      "src": "frontend/next.config.js",
+      "use": "@vercel/next"
     }
   ],
   "routes": [
     {
+      "src": "/api/(.*)",
+      "dest": "/frontend/api/$1"
+    },
+    {
       "src": "/(.*)",
       "dest": "/frontend/$1"
     }
-  ]
+  ],
+  "env": {
+    "NEXT_PUBLIC_API_URL": "https://ethical-partys-api.onrender.com"
+  }
 }

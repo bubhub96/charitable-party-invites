@@ -18,7 +18,8 @@ export default async function handler(req, res) {
   }
 
   try {
-    const apiUrl = 'https://ethical-partys-api.onrender.com';
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://ethical-partys-api.onrender.com';
+    console.log('Using API URL:', apiUrl);
     const targetUrl = `${apiUrl}${path}`;
     
     console.log('Proxying request:', {
