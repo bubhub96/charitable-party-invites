@@ -8,7 +8,8 @@ const TestEnv = () => {
 
   const testFetch = async () => {
     try {
-      const url = '/api/health';
+      // Use absolute URL to avoid path issues
+      const url = window.location.origin + '/api/health';
       console.log('Testing with fetch:', url);
       
       console.log('Making fetch request to:', url);
@@ -32,7 +33,8 @@ const TestEnv = () => {
 
   const testXHR = async () => {
     return new Promise((resolve) => {
-      const url = '/api/health';
+      // Use absolute URL to avoid path issues
+      const url = window.location.origin + '/api/health';
       console.log('Testing with XHR:', url);
       
       const xhr = new XMLHttpRequest();
