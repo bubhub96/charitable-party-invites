@@ -66,11 +66,17 @@ export const AuthProvider = ({ children }) => {
   };
 
   const register = async (name, email, password) => {
+    const apiUrl = process.env.REACT_APP_API_URL;
+    if (!apiUrl) {
+      console.error('API URL is not configured');
+      throw new Error('API configuration error');
+    }
     console.log('Attempting registration with:', { name, email });
     console.log('API URL:', process.env.REACT_APP_API_URL);
     
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/users/register`, {
+      console.log(`Making request to ${apiUrl}/api/users/register`);
+      const response = await fetch(`${apiUrl}/api/users/register`, {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
@@ -78,7 +84,7 @@ export const AuthProvider = ({ children }) => {
         },
         body: JSON.stringify({ name, email, password }),
         mode: 'cors',
-        credentials: 'include'
+        credentials: 'same-origin'
       });
       
       console.log('Response status:', response.status);

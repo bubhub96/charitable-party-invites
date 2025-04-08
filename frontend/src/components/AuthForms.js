@@ -78,7 +78,11 @@ export const RegisterForm = () => {
       navigate('/');
     } catch (err) {
       console.error('Registration error:', err);
-      setError(err.message || 'Registration failed. Please try again.');
+      if (err.message === 'Failed to fetch') {
+        setError('Unable to connect to the server. Please try again later.');
+      } else {
+        setError(err.message || 'Registration failed. Please try again.');
+      }
     }
   };
 
