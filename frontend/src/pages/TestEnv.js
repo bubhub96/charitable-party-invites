@@ -13,11 +13,17 @@ const TestEnv = () => {
       
       console.log('Making fetch request to:', url);
       const response = await fetch(url);
-      console.log('Response:', response);
+      const text = await response.text();
+      console.log('Raw response text:', text);
       
-      const data = await response.json();
-      console.log('Fetch response:', data);
-      return { success: true, data };
+      try {
+        const data = JSON.parse(text);
+        console.log('Parsed JSON:', data);
+        return { success: true, data };
+      } catch (parseError) {
+        console.error('JSON parse error:', parseError);
+        throw new Error(`Invalid JSON response: ${text.substring(0, 100)}...`);
+      }
     } catch (error) {
       console.error('Fetch error:', error);
       return { success: false, error };
