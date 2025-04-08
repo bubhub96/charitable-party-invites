@@ -6,7 +6,18 @@ require('dotenv').config();
 const app = express();
 
 // Middleware
-app.use(cors());
+// CORS configuration
+const corsOptions = {
+  origin: [
+    'https://charitable-party-invites-1atmps48d-chris-projects-5bcbafab.vercel.app',
+    'http://localhost:3000'
+  ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Database connection
