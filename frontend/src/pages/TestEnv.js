@@ -7,7 +7,7 @@ const TestEnv = () => {
 
   const testFetch = async () => {
     try {
-      const url = `${process.env.REACT_APP_API_URL}/api/health`;
+      const url = 'https://ethical-partys-api.onrender.com/api/health';
       console.log('Testing with fetch:', url);
       
       const response = await fetch(url, {
@@ -29,7 +29,7 @@ const TestEnv = () => {
 
   const testXHR = async () => {
     return new Promise((resolve) => {
-      const url = `${process.env.REACT_APP_API_URL}/api/health`;
+      const url = 'https://ethical-partys-api.onrender.com/api/health';
       console.log('Testing with XHR:', url);
       
       const xhr = new XMLHttpRequest();

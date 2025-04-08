@@ -66,7 +66,8 @@ export const AuthProvider = ({ children }) => {
   };
 
   const register = async (name, email, password) => {
-    const apiUrl = process.env.REACT_APP_API_URL;
+    // Temporarily hardcode API URL for testing
+    const apiUrl = 'https://ethical-partys-api.onrender.com';
     if (!apiUrl) {
       console.error('API URL is not configured');
       throw new Error('API configuration error');
