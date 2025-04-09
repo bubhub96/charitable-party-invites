@@ -1,13 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 import '../styles/TestEnv.css';
 
 const EmailTest = () => {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
+  const navigate = useNavigate();
   const [testEmail, setTestEmail] = useState('');
   const [testType, setTestType] = useState('invitation');
   const [status, setStatus] = useState({ loading: false, message: '', error: false });
   const [testResult, setTestResult] = useState(null);
+  const [authChecked, setAuthChecked] = useState(false);
+  
+  useEffect(() => {
+    // Check if authentication is complete (not loading)
+    if (!loading) {
+      setAuthChecked(true);
+      
+      // If user is not authenticated, redirect to login
+      if (!user && authChecked) {
+        console.log('User not authenticated, redirecting to login');
+        navigate('/login');
+      }
+    }
+  }, [user, loading, navigate, authChecked]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -81,12 +97,33 @@ const EmailTest = () => {
     }
   };
 
+  // Show loading state while checking authentication
+  if (loading || !authChecked) {
+    return (
+      <div className="test-env">
+        <h1>Email Testing Environment</h1>
+        <div className="test-container">
+          <p>Loading authentication status...</p>
+        </div>
+      </div>
+    );
+  }
+  
+  // This should never render because we redirect in the useEffect
+  // But keeping it as a fallback
   if (!user) {
     return (
       <div className="test-env">
         <h1>Email Testing Environment</h1>
         <div className="test-container">
           <p>You must be logged in to access this page.</p>
+          <button 
+            onClick={() => navigate('/login')} 
+            className="test-button"
+            style={{ marginTop: '1rem' }}
+          >
+            Go to Login
+          </button>
         </div>
       </div>
     );

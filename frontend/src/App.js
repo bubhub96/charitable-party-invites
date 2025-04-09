@@ -49,7 +49,7 @@ function App() {
                 <Routes>
                   <Route path="/" element={<Home />} />
                   <Route path="/test-env" element={<TestEnv />} />
-                  <Route path="/email-test" element={<EmailTest />} />
+                  <Route path="/email-test" element={<ProtectedRoute><EmailTest /></ProtectedRoute>} />
                   <Route path="/login" element={<Auth />} />
                   <Route path="/register" element={<Auth />} />
                   <Route
