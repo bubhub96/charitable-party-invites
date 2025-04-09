@@ -5,7 +5,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 // Common email template header with logo
 const getEmailHeader = () => {
-  const logoUrl = `${process.env.FRONTEND_URL || 'https://www.ethicalpartys.com'}/images/logo.png`;
+  const logoUrl = `${process.env.FRONTEND_URL || 'https://www.ethicalpartys.com'}/images/ethical-childrens-partys-high-resolution-logo.png`;
   
   return `
     <div style="text-align: center; margin-bottom: 30px;">
