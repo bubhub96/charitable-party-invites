@@ -70,10 +70,12 @@ mongoose.connect(dbUri, {
 const invitationRoutes = require('./routes/invitations');
 const donationRoutes = require('./routes/donations');
 const userRoutes = require('./routes/users');
+const testRoutes = require('./routes/test');
 
 app.use('/api/invitations', invitationRoutes);
 app.use('/api/donations', donationRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/test', testRoutes);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {

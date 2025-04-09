@@ -1,0 +1,109 @@
+.test-env {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.test-env h1 {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: var(--text-color);
+}
+
+.test-container {
+  background: white;
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  margin-bottom: 2rem;
+}
+
+.test-container h2 {
+  margin-bottom: 1rem;
+  color: var(--text-color);
+}
+
+.test-form {
+  margin-top: 1.5rem;
+}
+
+.test-form .form-group {
+  margin-bottom: 1.5rem;
+}
+
+.test-form label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.test-form input,
+.test-form select {
+  width: 100%;
+  padding: 0.8rem;
+  border: 2px solid #eee;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.test-form input:focus,
+.test-form select:focus {
+  border-color: var(--secondary-color);
+  outline: none;
+}
+
+.test-button {
+  background: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 30px;
+  font-size: 1rem;
+  font-weight: bold;
+  width: 100%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.test-button:not(:disabled):hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(255,107,107,0.2);
+}
+
+.test-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.status-message {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.status-message.success {
+  background-color: rgba(76, 175, 80, 0.1);
+  color: #4CAF50;
+  border: 1px solid #4CAF50;
+}
+
+.status-message.error {
+  background-color: rgba(255, 68, 68, 0.1);
+  color: #ff4444;
+  border: 1px solid #ff4444;
+}
+
+.test-result {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background-color: #f5f5f5;
+  border-radius: 8px;
+  overflow-x: auto;
+}
+
+.test-result pre {
+  font-family: monospace;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
