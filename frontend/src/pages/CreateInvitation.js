@@ -37,27 +37,27 @@ const CreateInvitation = () => {
 
   const validations = {
     childName: [
-      validationRules.required,
+      validationRules.requiredName,
       validationRules.minLength(2),
       validationRules.maxLength(50)
     ],
     eventDate: [
-      validationRules.required,
+      validationRules.requiredDate,
       validationRules.future
     ],
     eventEndTime: [
-      validationRules.required,
+      validationRules.requiredTime,
       validationRules.future
     ],
     eventLocation: [
-      validationRules.required,
+      validationRules.requiredLocation,
       validationRules.minLength(5)
     ],
     charityName: [
-      validationRules.required
+      validationRules.requiredCharity
     ],
     giftFundTarget: [
-      validationRules.required,
+      validationRules.requiredAmount,
       validationRules.numeric,
       validationRules.positive
     ]

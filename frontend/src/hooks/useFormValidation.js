@@ -70,7 +70,20 @@ const useFormValidation = (initialState, validationRules) => {
 
 // Common validation rules
 export const validationRules = {
+  // Generic required rule
   required: (value) => !value && 'This field is required',
+  
+  // Field-specific required rules
+  requiredName: (value) => !value && 'Name is required',
+  requiredEmail: (value) => !value && 'Email is required',
+  requiredPassword: (value) => !value && 'Password is required',
+  requiredDate: (value) => !value && 'Date is required',
+  requiredTime: (value) => !value && 'Time is required',
+  requiredLocation: (value) => !value && 'Location is required',
+  requiredCharity: (value) => !value && 'Please select a charity',
+  requiredAmount: (value) => !value && 'Amount is required',
+  
+  // Other validation rules
   email: (value) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return value && !emailRegex.test(value) ? 'Invalid email address' : '';

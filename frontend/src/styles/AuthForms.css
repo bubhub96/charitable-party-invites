@@ -65,6 +65,18 @@
   text-align: center;
 }
 
+.field-error {
+  color: #ff4444;
+  font-size: 0.85rem;
+  margin-top: 0.3rem;
+  padding-left: 0.5rem;
+}
+
+input.error {
+  border-color: #ff4444;
+  background-color: rgba(255, 68, 68, 0.05);
+}
+
 .auth-form .switch-form {
   text-align: center;
   margin-top: 1rem;
