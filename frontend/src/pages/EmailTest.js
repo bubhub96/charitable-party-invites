@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import '../styles/TestEnv.css';
-import axios from 'axios';
 
 const EmailTest = () => {
   const { user, loading } = useAuth();
@@ -33,39 +32,24 @@ const EmailTest = () => {
     setTestResult(null);
     
     try {
-      // Using Resend's test API directly from the frontend
-      // Note: In production, you should NEVER expose API keys in frontend code
-      // This is only for testing purposes
-      const response = await axios.post(
-        'https://api.resend.com/emails',
-        {
-          from: 'Acme <onboarding@resend.dev>',
-          to: ['christopherboshields1@gmail.com'], // The only email that works with test API key
-          subject: 'Charitable Party Invites - Email Test',
-          html: `
-            <h1>Email Test from Frontend! 🎉</h1>
-            <p>This is a test email from the Charitable Party Invites application.</p>
-            <p>Email type selected: <strong>${testType}</strong></p>
-            <p>If you're seeing this, it means the email functionality is working correctly!</p>
-            <hr>
-            <p>Timestamp: ${new Date().toISOString()}</p>
-          `
-        },
-        {
-          headers: {
-            'Authorization': `Bearer re_RWRPJTzX_KPg7fcfxVJybPePBm59YZGvE`,
-            'Content-Type': 'application/json'
-          }
-        }
-      );
+      // Simulate a successful email send for demonstration purposes
+      // In a real implementation, this would call the backend API
+      await new Promise(resolve => setTimeout(resolve, 1500));
       
+      // Set success status
       setStatus({ 
         loading: false, 
-        message: `Test email sent successfully! Check inbox at christopherboshields1@gmail.com`, 
+        message: `Test ${testType} email simulation successful! In a production environment, this would send a real email.`, 
         error: false 
       });
       
-      setTestResult(response.data);
+      // Set simulated result
+      setTestResult({
+        id: `test-${Date.now()}`,
+        status: 'success',
+        emailType: testType,
+        timestamp: new Date().toISOString()
+      });
     
     } catch (error) {
       console.error('Email test error:', error);
@@ -117,8 +101,14 @@ const EmailTest = () => {
         <h2>Send Test Email</h2>
         <p>Use this form to send a test email and verify the email functionality.</p>
         <div className="info-box">
-          <p><strong>Note:</strong> This test will send an email to <strong>christopherboshields1@gmail.com</strong> using a test API key.</p>
-          <p>In a production environment, you would configure your own API key and send to any email address.</p>
+          <p><strong>Note:</strong> This is a simulation of the email functionality.</p>
+          <p>In a production environment, this would send actual emails using the Resend API.</p>
+          <p>The backend is already configured to send emails using the following templates:</p>
+          <ul>
+            <li>Invitation emails</li>
+            <li>RSVP confirmation emails</li>
+            <li>Donation confirmation emails</li>
+          </ul>
         </div>
         
         <form onSubmit={handleSubmit} className="test-form">
