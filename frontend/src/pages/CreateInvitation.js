@@ -42,12 +42,12 @@ const CreateInvitation = () => {
       validationRules.maxLength(50)
     ],
     eventDate: [
-      validationRules.requiredDate,
-      validationRules.future
+      validationRules.requiredStartTime,
+      validationRules.futureStart
     ],
     eventEndTime: [
-      validationRules.requiredTime,
-      validationRules.future
+      validationRules.requiredEndTime,
+      validationRules.futureEnd
     ],
     eventLocation: [
       validationRules.requiredLocation,

@@ -77,8 +77,9 @@ export const validationRules = {
   requiredName: (value) => !value && 'Name is required',
   requiredEmail: (value) => !value && 'Email is required',
   requiredPassword: (value) => !value && 'Password is required',
-  requiredDate: (value) => !value && 'Date is required',
-  requiredTime: (value) => !value && 'Time is required',
+  requiredDate: (value) => !value && 'Date and time are required',
+  requiredStartTime: (value) => !value && 'Party start date and time are required',
+  requiredEndTime: (value) => !value && 'Party end date and time are required',
   requiredLocation: (value) => !value && 'Location is required',
   requiredCharity: (value) => !value && 'Please select a charity',
   requiredAmount: (value) => !value && 'Amount is required',
@@ -98,7 +99,15 @@ export const validationRules = {
     value && Number(value) <= 0 ? 'Must be a positive number' : '',
   future: (value) => {
     const date = new Date(value);
-    return date <= new Date() ? 'Date must be in the future' : '';
+    return date <= new Date() ? 'Date and time must be in the future' : '';
+  },
+  futureStart: (value) => {
+    const date = new Date(value);
+    return date <= new Date() ? 'Party start date and time must be in the future' : '';
+  },
+  futureEnd: (value) => {
+    const date = new Date(value);
+    return date <= new Date() ? 'Party end date and time must be in the future' : '';
   },
   passwordMatch: (value, values) => 
     value !== values.password ? 'Passwords do not match' : ''
