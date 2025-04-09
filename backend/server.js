@@ -51,6 +51,10 @@ app.use((req, res, next) => {
 // app.use(cors());
 app.use(express.json());
 
+// Serve static files from the public directory
+app.use(express.static('public'));
+console.log('Serving static files from public directory');
+
 // Database connection
 const dbUri = process.env.MONGODB_URI || 'mongodb://localhost/charitable-invites';
 console.log('MongoDB URI present:', !!process.env.MONGODB_URI);

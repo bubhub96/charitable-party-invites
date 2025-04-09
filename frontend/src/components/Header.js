@@ -17,7 +17,7 @@ const Header = () => {
     <header className="header">
       <div className="header-content">
         <Link to="/" className="logo">
-          🎈 Charitable Party
+          <img src="/images/logo.svg" alt="Ethical Childrens Partys" className="logo-image" />
         </Link>
         <nav className="nav-links">
           <Link to="/" className="nav-link">Home</Link>

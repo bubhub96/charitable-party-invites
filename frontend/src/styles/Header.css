@@ -23,6 +23,12 @@
   gap: 0.5rem;
 }
 
+.logo-image {
+  height: 50px;
+  max-width: 200px;
+  object-fit: contain;
+}
+
 .nav-links {
   display: flex;
   gap: 2rem;

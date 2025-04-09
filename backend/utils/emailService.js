@@ -3,6 +3,28 @@ const { Resend } = require('resend');
 // Initialize Resend with API key
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+// Common email template header with logo
+const getEmailHeader = () => {
+  const logoUrl = `${process.env.FRONTEND_URL || 'https://www.ethicalpartys.com'}/images/logo.svg`;
+  
+  return `
+    <div style="text-align: center; margin-bottom: 30px;">
+      <img src="${logoUrl}" alt="Ethical Childrens Partys" style="max-width: 300px; height: auto;" />
+    </div>
+    <div style="max-width: 600px; margin: 0 auto; padding: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+  `;
+};
+
+// Common email template footer
+const getEmailFooter = () => {
+  return `
+    </div>
+    <div style="text-align: center; margin-top: 30px; color: #666; font-size: 12px;">
+      <p>© ${new Date().getFullYear()} Ethical Childrens Partys. All rights reserved.</p>
+    </div>
+  `;
+};
+
 // Send invitation email
 const sendInvitationEmail = async (to, invitationData) => {
   const { childName, eventDate, eventEndTime, eventLocation, charityName } = invitationData;
@@ -15,7 +37,8 @@ const sendInvitationEmail = async (to, invitationData) => {
     to,
     subject: `You're Invited to ${childName}'s Party!`,
     html: `
-      <h1>You're Invited! 🎉</h1>
+      ${getEmailHeader()}
+      <h1 style="color: #005c2f; text-align: center;">You're Invited! 🎉</h1>
       <p>You're invited to ${childName}'s party!</p>
       <div style="margin: 20px 0;">
         <p><strong>When:</strong> ${startTime} to ${endTime}</p>
@@ -24,16 +47,19 @@ const sendInvitationEmail = async (to, invitationData) => {
       </div>
       <p>Instead of bringing gifts, we're collecting donations for ${charityName}.</p>
       <p>Click the link below to RSVP and contribute to the gift fund:</p>
-      <a href="${process.env.FRONTEND_URL}/invitation/${invitationData._id}" 
-         style="display: inline-block; 
-                padding: 10px 20px; 
-                background-color: #4CAF50; 
-                color: white; 
-                text-decoration: none; 
-                border-radius: 5px; 
-                margin: 20px 0;">
-        View Invitation & RSVP
-      </a>
+      <div style="text-align: center;">
+        <a href="${process.env.FRONTEND_URL}/invitation/${invitationData._id}" 
+           style="display: inline-block; 
+                  padding: 10px 20px; 
+                  background-color: #005c2f; 
+                  color: white; 
+                  text-decoration: none; 
+                  border-radius: 5px; 
+                  margin: 20px 0;">
+          View Invitation & RSVP
+        </a>
+      </div>
+      ${getEmailFooter()}
     `
   };
 
@@ -72,7 +98,8 @@ const sendRsvpConfirmationEmail = async (to, rsvpData, invitationData) => {
     to,
     subject: `RSVP Confirmation - ${childName}'s Party`,
     html: `
-      <h1>RSVP Confirmation</h1>
+      ${getEmailHeader()}
+      <h1 style="color: #005c2f; text-align: center;">RSVP Confirmation</h1>
       <p>Dear ${guestName},</p>
       <p>Thank you for your RSVP to ${childName}'s party!</p>
       <p><strong>Your Response:</strong> ${attending === 'yes' ? 'Attending' : 'Not Attending'}</p>
@@ -83,6 +110,7 @@ const sendRsvpConfirmationEmail = async (to, rsvpData, invitationData) => {
           <p>Location: ${eventLocation}</p>
         </div>
       ` : ''}
+      ${getEmailFooter()}
     `
   };
 
@@ -106,10 +134,12 @@ const sendDonationConfirmationEmail = async (to, donationData, invitationData) =
     to,
     subject: `Donation Confirmation - ${childName}'s Party`,
     html: `
-      <h1>Thank You for Your Donation! 🎁</h1>
+      ${getEmailHeader()}
+      <h1 style="color: #005c2f; text-align: center;">Thank You for Your Donation! 🎁</h1>
       <p>Dear ${donor.name},</p>
       <p>Thank you for your generous donation of $${amount} to ${charityName} in celebration of ${childName}'s party!</p>
       <p>Your contribution will make a real difference.</p>
+      ${getEmailFooter()}
     `
   };
 
