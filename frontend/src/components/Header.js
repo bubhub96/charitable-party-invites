@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import BrandLogo from './BrandLogo';
 import '../styles/Header.css';
 
 const Header = () => {
@@ -17,10 +18,7 @@ const Header = () => {
     <header className="header">
       <div className="header-content">
         <Link to="/" className="logo">
-          <div className="text-logo">
-            <span className="logo-text-top">Ethical</span>
-            <span className="logo-text-bottom">Childrens Partys</span>
-          </div>
+          <BrandLogo />
         </Link>
         <nav className="nav-links">
           <Link to="/" className="nav-link">Home</Link>
