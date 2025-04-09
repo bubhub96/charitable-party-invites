@@ -65,8 +65,12 @@ const EmailTest = () => {
         }
       };
       
+      // Get the API URL from environment variable or use default
+      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+      console.log('Using API URL:', apiUrl);
+      
       // Call the backend API to send the test email
-      const response = await fetch('https://ethical-partys-api.onrender.com/api/test/email', {
+      const response = await fetch(`${apiUrl}/api/test/email`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -74,6 +78,14 @@ const EmailTest = () => {
         },
         body: JSON.stringify(sampleData)
       });
+      
+      // Check if the response is JSON
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        const text = await response.text();
+        console.error('Non-JSON response:', text);
+        throw new Error('Server returned non-JSON response');
+      }
       
       const data = await response.json();
       

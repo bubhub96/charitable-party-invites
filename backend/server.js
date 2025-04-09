@@ -20,7 +20,12 @@ app.use((req, res, next) => {
 // CORS configuration
 app.use((req, res, next) => {
   // Allow specific origins
-  const allowedOrigins = ['https://www.ethicalpartys.com', 'http://localhost:3000'];
+  const allowedOrigins = [
+    'https://www.ethicalpartys.com', 
+    'http://localhost:3000',
+    'https://charitable-party-invites.vercel.app',
+    'https://charitable-party-invites-git-main-bubhub96.vercel.app'
+  ];
   const origin = req.headers.origin;
   
   if (allowedOrigins.includes(origin)) {
