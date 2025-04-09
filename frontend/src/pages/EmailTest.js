@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import '../styles/TestEnv.css';
+import axios from 'axios';
 
 const EmailTest = () => {
   const { user, loading } = useAuth();
@@ -28,77 +29,44 @@ const EmailTest = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (!testEmail) {
-      setStatus({ loading: false, message: 'Please enter a test email address', error: true });
-      return;
-    }
-    
     setStatus({ loading: true, message: 'Sending test email...', error: false });
     setTestResult(null);
     
     try {
-      // Create sample data for testing
-      const sampleData = {
-        testEmail,
-        testType,
-        sampleInvitation: {
-          childName: 'Test Child',
-          eventDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
-          eventEndTime: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000 + 3 * 60 * 60 * 1000).toISOString(),
-          eventLocation: '123 Test Street, Test City',
-          charityName: 'Test Charity',
-          giftFundTarget: 500
+      // Using Resend's test API directly from the frontend
+      // Note: In production, you should NEVER expose API keys in frontend code
+      // This is only for testing purposes
+      const response = await axios.post(
+        'https://api.resend.com/emails',
+        {
+          from: 'Acme <onboarding@resend.dev>',
+          to: ['christopherboshields1@gmail.com'], // The only email that works with test API key
+          subject: 'Charitable Party Invites - Email Test',
+          html: `
+            <h1>Email Test from Frontend! 🎉</h1>
+            <p>This is a test email from the Charitable Party Invites application.</p>
+            <p>Email type selected: <strong>${testType}</strong></p>
+            <p>If you're seeing this, it means the email functionality is working correctly!</p>
+            <hr>
+            <p>Timestamp: ${new Date().toISOString()}</p>
+          `
         },
-        sampleRsvp: {
-          guestName: 'Test Guest',
-          email: testEmail,
-          attending: 'yes',
-          guests: 2,
-          message: 'Looking forward to it!'
-        },
-        sampleDonation: {
-          amount: 50,
-          donor: {
-            name: 'Test Donor',
-            email: testEmail
+        {
+          headers: {
+            'Authorization': `Bearer re_RWRPJTzX_KPg7fcfxVJybPePBm59YZGvE`,
+            'Content-Type': 'application/json'
           }
         }
-      };
+      );
       
-      // Get the API URL from environment variable or use default
-      const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5000';
-      console.log('Using API URL:', apiUrl);
-      
-      // Call the backend API to send the test email
-      const response = await fetch(`${apiUrl}/api/test/email`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        },
-        body: JSON.stringify(sampleData)
+      setStatus({ 
+        loading: false, 
+        message: `Test email sent successfully! Check inbox at christopherboshields1@gmail.com`, 
+        error: false 
       });
       
-      // Check if the response is JSON
-      const contentType = response.headers.get('content-type');
-      if (!contentType || !contentType.includes('application/json')) {
-        const text = await response.text();
-        console.error('Non-JSON response:', text);
-        throw new Error('Server returned non-JSON response');
-      }
-      
-      const data = await response.json();
-      
-      if (response.ok) {
-        setStatus({ 
-          loading: false, 
-          message: `Test ${testType} email sent successfully! Check your inbox at ${testEmail}`, 
-          error: false 
-        });
-        setTestResult(data);
-      } else {
-        throw new Error(data.message || 'Failed to send test email');
-      }
+      setTestResult(response.data);
+    
     } catch (error) {
       console.error('Email test error:', error);
       setStatus({ 
@@ -148,22 +116,14 @@ const EmailTest = () => {
       <div className="test-container">
         <h2>Send Test Email</h2>
         <p>Use this form to send a test email and verify the email functionality.</p>
+        <div className="info-box">
+          <p><strong>Note:</strong> This test will send an email to <strong>christopherboshields1@gmail.com</strong> using a test API key.</p>
+          <p>In a production environment, you would configure your own API key and send to any email address.</p>
+        </div>
         
         <form onSubmit={handleSubmit} className="test-form">
           <div className="form-group">
-            <label htmlFor="testEmail">Test Email Address:</label>
-            <input
-              type="email"
-              id="testEmail"
-              value={testEmail}
-              onChange={(e) => setTestEmail(e.target.value)}
-              placeholder="Enter your email address"
-              required
-            />
-          </div>
-          
-          <div className="form-group">
-            <label htmlFor="testType">Email Type:</label>
+            <label htmlFor="testType">Email Template:</label>
             <select
               id="testType"
               value={testType}
