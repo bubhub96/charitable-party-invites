@@ -3,7 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import '../styles/AuthForms.css';
 
-export const LoginForm = () => {
+export const LoginForm = ({ onSuccess }) => {
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [errors, setErrors] = useState({});
   const [generalError, setGeneralError] = useState('');
@@ -37,8 +37,15 @@ export const LoginForm = () => {
     
     try {
       await login(formData.email, formData.password);
-      navigate('/');
+      
+      // Use the onSuccess callback if provided, otherwise navigate to home
+      if (typeof onSuccess === 'function') {
+        onSuccess();
+      } else {
+        navigate('/');
+      }
     } catch (err) {
+      console.error('Login error:', err);
       setGeneralError('Invalid email or password');
     }
   };

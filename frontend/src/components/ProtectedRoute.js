@@ -21,6 +21,7 @@ const ProtectedRoute = ({ children }) => {
   }
 
   if (!user) {
+    console.log('User not authenticated, redirecting to login from:', location.pathname);
     // Redirect to login page but save the location they tried to access
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
