@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logo Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .logo-container {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .text-logo {
+            display: flex;
+            flex-direction: column;
+            font-family: 'Brush Script MT', cursive;
+            line-height: 1;
+            color: #005c2f;
+            background-color: white;
+            padding: 5px 15px;
+            border-radius: 8px;
+            width: fit-content;
+        }
+        .logo-text-top {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .logo-text-bottom {
+            font-size: 28px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Logo Test Page</h1>
+    
+    <div class="logo-container">
+        <h2>Text-based Logo</h2>
+        <div class="text-logo">
+            <span class="logo-text-top">Ethical</span>
+            <span class="logo-text-bottom">Childrens Partys</span>
+        </div>
+    </div>
+    
+    <div class="logo-container">
+        <h2>Image Logo (brand-logo-v2.png)</h2>
+        <img src="frontend/public/images/brand-logo-v2.png" alt="Ethical Childrens Partys" style="height: 50px;">
+    </div>
+    
+    <div class="logo-container">
+        <h2>Original High Resolution Logo</h2>
+        <img src="frontend/public/images/ethical-childrens-partys-high-resolution-logo.png" alt="Ethical Childrens Partys" style="height: 50px;">
+    </div>
+</body>
+</html>
