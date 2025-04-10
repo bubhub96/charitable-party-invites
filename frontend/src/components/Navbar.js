@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import { useAuth } from '../context/AuthContext';
 import { theme } from '../styles/theme';
 import { Button } from '../styles/components';
-import logo from '../assets/new-logo.svg';
 
 const Nav = styled.nav`
   background: ${theme.colors.background.paper};
@@ -75,7 +74,15 @@ const Navbar = () => {
     <Nav>
       <NavContainer>
         <Logo to="/">
-          <img src={logo} alt="Ethical Children's Parties Logo" />
+          <img 
+            src="/images/brand/logo-2025.png" 
+            alt="Ethical Children's Parties Logo" 
+            onError={(e) => {
+              // Fallback to text if image fails to load
+              e.target.style.display = 'none';
+              e.target.parentNode.innerHTML += `<div style="color: #005c2f; font-family: 'Brush Script MT', cursive; font-size: 28px; font-weight: bold;">Ethical Childrens Partys</div>`;
+            }}
+          />
         </Logo>
         <NavLinks>
           {user ? (
