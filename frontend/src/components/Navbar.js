@@ -33,8 +33,8 @@ const Logo = styled(Link)`
   gap: ${theme.spacing(2)};
 
   img {
-    width: 250px;
-    height: 80px;
+    width: 300px; /* Increased from 250px (20% larger) */
+    height: 96px; /* Increased from 80px (20% larger) */
     transition: transform 0.3s ease;
 
     &:hover {
