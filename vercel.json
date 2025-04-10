@@ -1,5 +1,13 @@
 {
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
-  ]
+  ],
+  "env": {
+    "REACT_APP_API_URL": "https://ethical-partys-api.onrender.com"
+  },
+  "build": {
+    "env": {
+      "REACT_APP_API_URL": "https://ethical-partys-api.onrender.com"
+    }
+  }
 }
