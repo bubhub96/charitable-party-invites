@@ -1,8 +1,23 @@
 import React from 'react';
 
 const BrandLogo = () => {
+  // Add a timestamp to prevent caching issues
+  const timestamp = new Date().getTime();
+  const logoUrl = `/images/ethical-childrens-partys-high-resolution-logo.png?v=${timestamp}`;
+  
   const logoStyle = {
-    display: 'flex',
+    height: '50px',
+    display: 'block'
+  };
+
+  // Fallback text in case image doesn't load
+  const handleImageError = (e) => {
+    e.target.style.display = 'none';
+    e.target.nextElementSibling.style.display = 'flex';
+  };
+
+  const textLogoStyle = {
+    display: 'none', // Hidden by default, shown if image fails
     flexDirection: 'column',
     fontFamily: "'Brush Script MT', cursive",
     lineHeight: 1,
@@ -13,20 +28,18 @@ const BrandLogo = () => {
     textAlign: 'center'
   };
 
-  const topTextStyle = {
-    fontSize: '24px',
-    fontWeight: 'bold'
-  };
-
-  const bottomTextStyle = {
-    fontSize: '28px',
-    fontWeight: 'bold'
-  };
-
   return (
-    <div style={logoStyle}>
-      <span style={topTextStyle}>Ethical</span>
-      <span style={bottomTextStyle}>Childrens Partys</span>
+    <div className="brand-logo-container">
+      <img 
+        src={logoUrl} 
+        alt="Ethical Childrens Partys" 
+        style={logoStyle} 
+        onError={handleImageError}
+      />
+      <div style={textLogoStyle}>
+        <span style={{ fontSize: '24px', fontWeight: 'bold' }}>Ethical</span>
+        <span style={{ fontSize: '28px', fontWeight: 'bold' }}>Childrens Partys</span>
+      </div>
     </div>
   );
 };
