@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import BrandLogo from './BrandLogo';
 import '../styles/Header.css';
 
 const Header = () => {
@@ -18,7 +17,14 @@ const Header = () => {
     <header className="header">
       <div className="header-content">
         <Link to="/" className="logo">
-          <BrandLogo />
+          <h1 style={{ 
+            color: '#005c2f', 
+            margin: 0, 
+            fontSize: '24px',
+            fontWeight: 'bold'
+          }}>
+            Ethical Childrens Partys
+          </h1>
         </Link>
         <nav className="nav-links">
           <Link to="/" className="nav-link">Home</Link>
