@@ -76,11 +76,8 @@ export const AuthProvider = ({ children }) => {
       const apiUrl = 'https://ethical-partys-api.onrender.com/api/users/login';
       console.log('Making direct API call to:', apiUrl);
       
-      // Try with no-cors mode to bypass CORS restrictions
-      console.log('Using no-cors mode to bypass CORS restrictions');
       const response = await fetch(apiUrl, {
         method: 'POST',
-        mode: 'no-cors', // This will prevent CORS errors but makes response opaque
         headers: { 
           'Content-Type': 'application/json',
           'Accept': 'application/json'
@@ -88,25 +85,29 @@ export const AuthProvider = ({ children }) => {
         body: JSON.stringify({ email, password })
       });
       
-      console.log('Response type with no-cors:', response.type);
       console.log('Response status:', response.status);
       
-      // With no-cors mode, we can't read the response content
-      // So we'll have to assume it worked if we didn't get an error
-      console.log('Login likely successful (no-cors mode prevents reading response)');
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Login failed');
+      }
       
-      // Since we can't read the response, we'll create a mock user
+      const data = await response.json();
+      console.log('Login successful');
+      
+      // Store the real token from the backend
+      localStorage.setItem('token', data.token);
+      
+      // Set the user data
       const userData = {
-        email,
-        id: Date.now().toString() // Generate a temporary ID
+        email: data.user.email,
+        id: data.user.id,
+        name: data.user.name
       };
       
-      // We can't get a token, so we'll use a temporary one
-      const tempToken = 'temp-token-' + Date.now();
-      localStorage.setItem('token', tempToken);
       setUser(userData);
       
-      // Return the mock user data
+      // Return the user data
       return userData;
     } catch (error) {
       console.error('Login error:', error);
@@ -122,11 +123,8 @@ export const AuthProvider = ({ children }) => {
       const apiUrl = 'https://ethical-partys-api.onrender.com/api/users/register';
       console.log('Making direct API call to:', apiUrl);
       
-      // Try with no-cors mode to bypass CORS restrictions
-      console.log('Using no-cors mode to bypass CORS restrictions');
       const response = await fetch(apiUrl, {
         method: 'POST',
-        mode: 'no-cors', // This will prevent CORS errors but makes response opaque
         headers: { 
           'Content-Type': 'application/json',
           'Accept': 'application/json'
@@ -134,26 +132,29 @@ export const AuthProvider = ({ children }) => {
         body: JSON.stringify({ name, email, password })
       });
       
-      console.log('Response type with no-cors:', response.type);
       console.log('Response status:', response.status);
       
-      // With no-cors mode, we can't read the response content
-      // So we'll have to assume it worked if we didn't get an error
-      console.log('Registration likely successful (no-cors mode prevents reading response)');
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Registration failed');
+      }
       
-      // Since we can't read the response, we'll create a mock user
+      const data = await response.json();
+      console.log('Registration successful');
+      
+      // Store the real token from the backend
+      localStorage.setItem('token', data.token);
+      
+      // Set the user data
       const userData = {
-        name,
-        email,
-        id: Date.now().toString() // Generate a temporary ID
+        name: data.user.name,
+        email: data.user.email,
+        id: data.user.id
       };
       
-      // We can't get a token, so we'll use a temporary one
-      const tempToken = 'temp-token-' + Date.now();
-      localStorage.setItem('token', tempToken);
       setUser(userData);
       
-      // Return the mock user data
+      // Return the user data
       return userData;
     } catch (error) {
       console.error('Registration error:', {
