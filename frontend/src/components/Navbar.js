@@ -77,6 +77,13 @@ const Navbar = () => {
           <img 
             src="/images/brand/logo-2025.png" 
             alt="Ethical Children's Parties Logo" 
+            style={{
+              width: '300px',
+              height: '96px',
+              transition: 'transform 0.3s ease'
+            }}
+            onMouseOver={(e) => e.target.style.transform = 'scale(1.05)'}
+            onMouseOut={(e) => e.target.style.transform = 'scale(1)'}
             onError={(e) => {
               // Fallback to text if image fails to load
               e.target.style.display = 'none';
