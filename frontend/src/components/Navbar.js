@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { useAuth } from '../context/AuthContext';
 import { theme } from '../styles/theme';
 import { Button } from '../styles/components';
-import logo from '../assets/logo-option2.svg';
+import logo from '../assets/new-logo.svg';
 
 const Nav = styled.nav`
   background: ${theme.colors.background.paper};
@@ -34,8 +34,8 @@ const Logo = styled(Link)`
   gap: ${theme.spacing(2)};
 
   img {
-    width: 200px;
-    height: 60px;
+    width: 250px;
+    height: 80px;
     transition: transform 0.3s ease;
 
     &:hover {
